@@ -1,4 +1,3 @@
-// const InvariantError = require('../../Commons/exceptions/InvariantError');
 const ExistingThread = require('../../Domains/threads/entities/ExistingThread');
 const ThreadRepository = require('../../Domains/threads/ThreadRepository');
 
@@ -25,38 +24,6 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
     return new ExistingThread({ ...result.rows[0] });
   }
-
-  // async getPasswordByUsername(username) {
-  //   const query = {
-  //     text: 'SELECT password FROM threads WHERE username = $1',
-  //     values: [username],
-  //   };
-
-  //   const result = await this._pool.query(query);
-
-  //   if (!result.rowCount) {
-  //     throw new InvariantError('username tidak ditemukan');
-  //   }
-
-  //   return result.rows[0].password;
-  // }
-
-  // async getIdByUsername(username) {
-  //   const query = {
-  //     text: 'SELECT id FROM users WHERE username = $1',
-  //     values: [username],
-  //   };
-
-  //   const result = await this._pool.query(query);
-
-  //   if (!result.rowCount) {
-  //     throw new InvariantError('user tidak ditemukan');
-  //   }
-
-  //   const { id } = result.rows[0];
-
-  //   return id;
-  // }
 }
 
 module.exports = ThreadRepositoryPostgres;
