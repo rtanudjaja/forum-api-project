@@ -7,7 +7,7 @@ describe('ExistingThread entities', () => {
       id: 'thread-123',
       title: 'sebuah thread',
       //missing body
-      userId: 'user-456',
+      owner: 'user-456',
       created_at: '2023-06-16T01:02:03.456Z',
       updated_at: '2023-06-16T01:02:03.456Z',
     };
@@ -24,7 +24,7 @@ describe('ExistingThread entities', () => {
       id: 'thread-123',
       title: 'sebuah thread',
       body: 1234,
-      userId: 'user-456',
+      owner: 'user-456',
       created_at: '2023-06-16T01:02:03.456Z',
       updated_at: '2023-06-16T01:02:03.456Z',
     };
@@ -41,7 +41,7 @@ describe('ExistingThread entities', () => {
       id: 'thread-123',
       title: 'sebuah thread',
       body: 'isi body yang lengkap',
-      userId: 'user-456',
+      owner: 'user-456',
       created_at: '2023-06-16T01:02:03.456Z',
       updated_at: '2023-06-16T01:02:03.456Z',
     };
@@ -54,7 +54,7 @@ describe('ExistingThread entities', () => {
     expect(existingThread.id).toEqual(payload.id);
     expect(existingThread.title).toEqual(payload.title);
     expect(existingThread.body).toEqual(payload.body);
-    expect(existingThread.userId).toEqual(payload.userId);
+    expect(existingThread.owner).toEqual(payload.owner);
     expect(existingThread.created_at).toEqual(payload.created_at);
     expect(existingThread.updated_at).toEqual(payload.updated_at);
   });
