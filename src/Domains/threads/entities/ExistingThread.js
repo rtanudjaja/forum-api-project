@@ -13,7 +13,7 @@ class ExistingThread {
   _verifyPayload(payload) {
     const { id, title, body, owner, created_at, updated_at } = payload;
 
-    if (!id || !title || !body || !owner) {
+    if (!id || !title || !body || !owner || !created_at || !updated_at) {
       throw new Error('EXISTING_THREAD.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
