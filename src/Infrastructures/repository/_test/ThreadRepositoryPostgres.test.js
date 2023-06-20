@@ -2,7 +2,7 @@ const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper
 const NewThread = require('../../../Domains/threads/entities/NewThread');
 const ExistingThread = require('../../../Domains/threads/entities/ExistingThread');
 const pool = require('../../database/postgres/pool');
-const ThreadsRepositoryPostgres = require('../ThreadRepositoryPostgres');
+const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
 describe('ThreadsRepository postgres', () => {
   afterEach(async () => {
@@ -23,7 +23,7 @@ describe('ThreadsRepository postgres', () => {
       });
       const fakeIdGenerator = () => '123'; // stub!
       const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
-      const threadRepositoryPostgres = new ThreadsRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
 
       // Action
       await threadRepositoryPostgres.addThread(newThread);
@@ -42,7 +42,7 @@ describe('ThreadsRepository postgres', () => {
       });
       const fakeIdGenerator = () => '123'; // stub!
       const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
-      const threadRepositoryPostgres = new ThreadsRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
 
       // Action
       const newlyAddedThread = await threadRepositoryPostgres.addThread(newThread);
