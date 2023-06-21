@@ -5,11 +5,11 @@ describe('NewThread entities', () => {
     // Arrange
     const payload = {
       title: 'sebuah thread',
-      owner: 'user-456',
     };
+    const credentialId = 'user-456';
 
     // Action & Assert
-    expect(() => new NewThread(payload)).toThrowError(
+    expect(() => new NewThread(credentialId, payload)).toThrowError(
       'NEW_THREAD.NOT_CONTAIN_NEEDED_PROPERTY'
     );
   });
@@ -19,11 +19,11 @@ describe('NewThread entities', () => {
     const payload = {
       title: 'sebuah thread',
       body: 1234,
-      owner: 'user-456',
     };
+    const credentialId = 'user-456';
 
     // Action & Assert
-    expect(() => new NewThread(payload)).toThrowError(
+    expect(() => new NewThread(credentialId, payload)).toThrowError(
       'NEW_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION'
     );
   });
@@ -33,16 +33,16 @@ describe('NewThread entities', () => {
     const payload = {
       title: 'sebuah thread',
       body: 'isi body yang lengkap',
-      owner: 'user-456',
     };
+    const credentialId = 'user-456';
 
     // Action
-    const newThread = new NewThread(payload);
+    const newThread = new NewThread(credentialId, payload);
 
     // Assert
     expect(newThread).toBeInstanceOf(NewThread);
     expect(newThread.title).toEqual(payload.title);
     expect(newThread.body).toEqual(payload.body);
-    expect(newThread.owner).toEqual(payload.owner);
+    expect(newThread.owner).toEqual(credentialId);
   });
 });

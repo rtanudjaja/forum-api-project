@@ -16,10 +16,10 @@ describe('ThreadsRepository postgres', () => {
   describe('addThread function', () => {
     it('should persist new thread and return new thread correctly', async () => {
       // Arrange
-      const newThread = new NewThread({
+      const credentialId = 'user-456';
+      const newThread = new NewThread(credentialId, {
         title: 'sebuah thread',
         body: 'isi body yang lengkap',
-        owner: 'user-456',
       });
       const fakeIdGenerator = () => '123'; // stub!
       const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
@@ -35,10 +35,10 @@ describe('ThreadsRepository postgres', () => {
 
     it('should return registered thread correctly', async () => {
       // Arrange
-      const newThread = new NewThread({
+      const credentialId = 'user-456';
+      const newThread = new NewThread(credentialId, {
         title: 'sebuah thread',
         body: 'isi body yang lengkap',
-        owner: 'user-456',
       });
       const fakeIdGenerator = () => '123'; // stub!
       const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
