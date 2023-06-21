@@ -20,7 +20,19 @@ const ThreadsTableTestHelper = {
     };
 
     const result = await pool.query(query);
+
     return result.rows;
+  },
+
+  async getThreadById(id) {
+    const query = {
+      text: 'SELECT * FROM threads WHERE id = $1',
+      values: [id],
+    };
+
+    const result = await pool.query(query);
+
+    return result.rows[0];
   },
 
   async cleanTable() {

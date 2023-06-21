@@ -1,3 +1,4 @@
+const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const NewThread = require('../../../Domains/threads/entities/NewThread');
 const ExistingThread = require('../../../Domains/threads/entities/ExistingThread');
@@ -56,6 +57,36 @@ describe('ThreadsRepository postgres', () => {
         created_at: '2023-06-16T01:02:03.456Z',
         updated_at: '2023-06-16T01:02:03.456Z',
       }));
+    });
+  });
+
+  describe('getThreadById function', () => {
+    it('should throw NotFoundError when thread not available', async () => {
+      // Arrange
+      const threadId = 'thread-123';
+      const fakeIdGenerator = () => '123'; // stub!
+      const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+
+      // Action & Assert
+      await expect(threadRepositoryPostgres.getThreadById(threadId)).rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not throw NotFoundError when thread available', async () => {
+      // Arrange
+      const threadId = 'thread-123';
+      const credentialId = 'user-456';
+      const newThread = new NewThread(credentialId, {
+        title: 'sebuah thread',
+        body: 'isi body yang lengkap',
+      });
+      await ThreadsTableTestHelper.addThread(newThread);
+      const fakeIdGenerator = () => '123'; // stub!
+      const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+
+      // Action & Assert
+      await expect(threadRepositoryPostgres.getThreadById(threadId)).resolves.not.toThrowError(NotFoundError);
     });
   });
 });
