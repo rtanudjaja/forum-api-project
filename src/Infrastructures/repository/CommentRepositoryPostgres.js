@@ -1,0 +1,41 @@
+const ExistingComment = require('../../Domains/comments/entities/ExistingComment');
+const CommentRepository = require('../../Domains/comments/CommentRepository');
+const NotFoundError = require('../../Commons/exceptions/NotFoundError');
+
+class CommentRepositoryPostgres extends CommentRepository {
+  constructor(pool, idGenerator, datetimeGetter) {
+    super();
+    this._pool = pool;
+    this._idGenerator = idGenerator;
+    this._datetimeGetter = datetimeGetter;
+  }
+
+  async addComment(newComment) {
+    const { content, owner } = newComment;
+    const id = `comment-${this._idGenerator()}`;
+    const createdAt = this._datetimeGetter();
+    const updatedAt = createdAt;
+    const query = {
+      text: 'INSERT INTO comments VALUES($1, $2, $3, $4, $5, FALSE) RETURNING id, content, owner, created_at, updated_at, is_delete',
+      values: [id, content, owner, createdAt, updatedAt],
+    };
+
+    const result = await this._pool.query(query);
+
+    return new ExistingComment({ ...result.rows[0] });
+  }
+
+  async getCommentById(id) {
+    const query = {
+      text: 'SELECT * FROM comments WHERE id = $1',
+      values: [id],
+    };
+    const result = await this._pool.query(query);
+    if (!result.rowCount) {
+      throw new NotFoundError('Comment tidak ditemukan');
+    }
+    return new ExistingComment({ ...result.rows[0] });
+  }
+}
+
+module.exports = CommentRepositoryPostgres;

@@ -76,11 +76,14 @@ describe('ThreadsRepository postgres', () => {
       // Arrange
       const threadId = 'thread-123';
       const credentialId = 'user-456';
-      const newThread = new NewThread(credentialId, {
+      await ThreadsTableTestHelper.addThread({
+        id: threadId,
         title: 'sebuah thread',
         body: 'isi body yang lengkap',
+        owner: credentialId,
+        created_at: '2023-06-16T01:02:03.456Z',
+        updated_at: '2023-06-16T01:02:03.456Z'
       });
-      await ThreadsTableTestHelper.addThread(newThread);
       const fakeIdGenerator = () => '123'; // stub!
       const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
