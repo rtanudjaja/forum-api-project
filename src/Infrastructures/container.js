@@ -28,6 +28,12 @@ const AddThreadUseCase = require('../Applications/use_case/AddThreadUseCase');
 const ThreadRepository = require('../Domains/threads/ThreadRepository');
 const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
 
+const AddCommentUseCase = require('../Applications/use_case/AddCommentUseCase');
+const CommentRepository = require('../Domains/comments/CommentRepository');
+const ThreadCommentRepository = require('../Domains/threads_comments/ThreadCommentRepository');
+const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
+const ThreadCommentRepositoryPostgres = require('./repository/ThreadCommentRepositoryPostgres');
+
 // creating container
 const container = createContainer();
 
@@ -71,6 +77,37 @@ container.register([
         },
         {
           concrete: () => new Date(),
+        },
+      ],
+    },
+  },
+  {
+    key: CommentRepository.name,
+    Class: CommentRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+        {
+          concrete: () => new Date(),
+        },
+      ],
+    },
+  },
+  {
+    key: ThreadCommentRepository.name,
+    Class: ThreadCommentRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
         },
       ],
     },
@@ -185,7 +222,28 @@ container.register([
         },
       ],
     },
-  }
+  },
+  {
+    key: AddCommentUseCase.name,
+    Class: AddCommentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'threadRepository',
+          internal: ThreadRepository.name,
+        },
+        {
+          name: 'commentRepository',
+          internal: CommentRepository.name,
+        },
+        {
+          name: 'threadCommentRepository',
+          internal: ThreadCommentRepository.name,
+        },
+      ],
+    },
+  },
 ]);
 
 module.exports = container;
