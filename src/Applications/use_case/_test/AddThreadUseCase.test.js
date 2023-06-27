@@ -32,12 +32,12 @@ describe('AddThreadUseCase', () => {
       .mockImplementation(() => Promise.resolve(mockNewThread));
     
     /** creating use case instance */
-    const getThreadUseCase = new AddThreadUseCase({
+    const addThreadUseCase = new AddThreadUseCase({
       threadRepository: mockThreadRepository,
     });
 
     // Action
-    const addedThread = await getThreadUseCase.execute(credentialId, useCasePayload);
+    const addedThread = await addThreadUseCase.execute(credentialId, useCasePayload);
 
     // Assert
     expect(addedThread).toStrictEqual(
