@@ -1,4 +1,5 @@
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
+const AuthorizationError = require('../../../Commons/exceptions/AuthorizationError');
 const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 const NewComment = require('../../../Domains/comments/entities/NewComment');
 const ExistingComment = require('../../../Domains/comments/entities/ExistingComment');
@@ -119,6 +120,39 @@ describe('CommentRepository postgres', () => {
       
       // Action & Assert
       await expect(commentRepositoryPostgres.deleteCommentById(commentId)).resolves.not.toThrowError(NotFoundError);
+    });
+  });
+
+  describe('verifyCommentOwner function', () => {
+    it('should throw InvariantError when user is not comment owner', async () => {
+      // Arrange
+      const credentialId = 'user-456';
+      const commentId = 'comment-123';
+      const fakeIdGenerator = () => '123'; // stub!
+      const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.verifyCommentOwner(commentId, credentialId)).rejects.toThrowError(AuthorizationError);
+    });
+
+    it('should not throw InvariantError when user is comment owner', async () => {
+      // Arrange
+      const credentialId = 'user-456';
+      const commentId = 'comment-123';
+      await CommentsTableTestHelper.addComment({
+        id: commentId,
+        content: 'sebuah comment',
+        owner: credentialId,
+        created_at: '2023-06-16T01:02:03.456Z',
+        updated_at: '2023-06-16T01:02:03.456Z'
+      });
+      const fakeIdGenerator = () => '123'; // stub!
+      const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.verifyCommentOwner(commentId, credentialId)).resolves.not.toThrowError(AuthorizationError);
     });
   });
 });
