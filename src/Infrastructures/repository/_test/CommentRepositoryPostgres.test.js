@@ -89,4 +89,36 @@ describe('CommentRepository postgres', () => {
       await expect(commentRepositoryPostgres.getCommentById(commentId)).resolves.not.toThrowError(NotFoundError);
     });
   });
+
+  describe('deleteCommentById function', () => {
+    it('should throw NotFoundError when comment not available', async () => {
+      // Arrange
+      const commentId = 'comment-123';
+      const fakeIdGenerator = () => '123'; // stub!
+      const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.deleteCommentById(commentId)).rejects.toThrowError(NotFoundError);
+    });
+
+    it('should soft delete the comment when comment available', async () => {
+      // Arrange
+      const credentialId = 'user-456';
+      const commentId = 'comment-123';
+      await CommentsTableTestHelper.addComment({
+        id: commentId,
+        content: 'sebuah comment',
+        owner: credentialId,
+        created_at: '2023-06-16T01:02:03.456Z',
+        updated_at: '2023-06-16T01:02:03.456Z'
+      });
+      const fakeIdGenerator = () => '123'; // stub!
+      const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+      
+      // Action & Assert
+      await expect(commentRepositoryPostgres.deleteCommentById(commentId)).resolves.not.toThrowError(NotFoundError);
+    });
+  });
 });

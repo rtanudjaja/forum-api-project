@@ -7,9 +7,6 @@ const ThreadCommentRepository = require('../../../Domains/threads_comments/Threa
 const AddCommentUseCase = require('../AddCommentUseCase');
 
 describe('AddCommentUseCase', () => {
-  /**
-   * Menguji apakah use case mampu mengoskestrasikan langkah demi langkah dengan benar.
-   */
   it('should orchestrating the add comment action correctly', async () => {
     // Arrange
     const useCasePayload = { content: 'sebuah comment' };

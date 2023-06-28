@@ -32,9 +32,22 @@ class CommentRepositoryPostgres extends CommentRepository {
     };
     const result = await this._pool.query(query);
     if (!result.rowCount) {
-      throw new NotFoundError('Comment tidak ditemukan');
+      throw new NotFoundError('comment tidak ditemukan');
     }
     return new ExistingComment({ ...result.rows[0] });
+  }
+
+  async deleteCommentById(commentId) {
+    const query = {
+      text: 'UPDATE comments SET is_delete = TRUE WHERE id = $1',
+      values: [commentId],
+    };
+
+    const result = await this._pool.query(query);
+    if (!result.rowCount) {
+      throw new NotFoundError('comment tidak ditemukan');
+    }
+    return result.rows;
   }
 }
 

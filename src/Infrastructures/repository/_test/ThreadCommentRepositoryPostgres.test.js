@@ -188,5 +188,5 @@ describe('ThreadCommentsRepository postgres', () => {
       // Action & Assert
       await expect(threadCommentRepositoryPostgres.deleteThreadCommentById(threadId, commentId)).resolves.not.toThrowError(NotFoundError);
     });
-  })
+  });
 });

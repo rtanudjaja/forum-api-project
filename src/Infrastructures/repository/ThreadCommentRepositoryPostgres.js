@@ -27,7 +27,7 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
 
     const result = await this._pool.query(query);
     if (!result.rowCount) {
-      throw new NotFoundError('Thread Comment tidak ditemukan');
+      throw new NotFoundError('thread Comment tidak ditemukan');
     }
     return result.rows;
   }
@@ -40,11 +40,10 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
 
     const result = await this._pool.query(query);
     if (!result.rowCount) {
-      throw new NotFoundError('Thread Comment tidak ditemukan');
+      throw new NotFoundError('thread Comment tidak ditemukan');
     }
     return result.rows;
   }
-
 }
 
 module.exports = ThreadCommentRepositoryPostgres;
