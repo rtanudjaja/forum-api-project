@@ -8,7 +8,7 @@ class CommentRepository {
   async deleteCommentById(id) {
     throw new Error('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED')
   }
-  async verifyOwner(commentId, userId) {
+  async verifyCommentOwner(commentId, userId) {
     throw new Error('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED')
   }
 }
