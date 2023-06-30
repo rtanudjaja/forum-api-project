@@ -128,7 +128,7 @@ describe('ThreadCommentsRepository postgres', () => {
     });
   });
 
-  describe('deleteThreadCommentById function', () => {
+  describe('verifyThreadCommentById function', () => {
     it('should throw NotFoundError when thread_comment not available', async () => {
       // Arrange
       const credentialId = 'user-456';
@@ -153,7 +153,7 @@ describe('ThreadCommentsRepository postgres', () => {
       const threadCommentRepositoryPostgres = new ThreadCommentRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action & Assert
-      await expect(threadCommentRepositoryPostgres.deleteThreadCommentById(threadId, commentId)).rejects.toThrowError(NotFoundError);
+      await expect(threadCommentRepositoryPostgres.verifyThreadCommentById(threadId, commentId)).rejects.toThrowError(NotFoundError);
     });
 
     it('should delete the thread_comment when thread_comment available', async () => {
@@ -186,7 +186,7 @@ describe('ThreadCommentsRepository postgres', () => {
       const threadCommentRepositoryPostgres = new ThreadCommentRepositoryPostgres(pool, fakeIdGenerator);
       
       // Action & Assert
-      await expect(threadCommentRepositoryPostgres.deleteThreadCommentById(threadId, commentId)).resolves.not.toThrowError(NotFoundError);
+      await expect(threadCommentRepositoryPostgres.verifyThreadCommentById(threadId, commentId)).resolves.not.toThrowError(NotFoundError);
     });
   });
 });

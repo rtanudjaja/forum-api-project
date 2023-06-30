@@ -5,7 +5,7 @@ class ThreadCommentRepository {
   async getThreadComments(threadId) {
     throw new Error('THREAD_COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED')
   }
-  async deleteThreadCommentById(threadId, commentId) {
+  async verifyThreadCommentById(threadId, commentId) {
     throw new Error('THREAD_COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED')
   }
 }

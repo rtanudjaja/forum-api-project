@@ -32,9 +32,9 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
     return result.rows;
   }
 
-  async deleteThreadCommentById(threadId, commentId) {
+  async verifyThreadCommentById(threadId, commentId) {
     const query = {
-      text: 'DELETE FROM threads_comments WHERE thread_id = $1 AND comment_id = $2 RETURNING id',
+      text: 'SELECT * FROM threads_comments WHERE thread_id = $1 AND comment_id = $2',
       values: [threadId, commentId],
     };
 
