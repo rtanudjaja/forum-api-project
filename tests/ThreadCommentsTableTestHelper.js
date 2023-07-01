@@ -24,17 +24,6 @@ const ThreadCommentsTableTestHelper = {
     return result.rows;
   },
 
-  // async getThreadCommentById(thread_id, comment_id) {
-  //   const query = {
-  //     text: 'SELECT * FROM threads_comments WHERE thread_id = $1 AND comment_id = $2',
-  //     values: [thread_id, comment_id],
-  //   };
-
-  //   const result = await pool.query(query);
-
-  //   return result.rows[0];
-  // },
-
   async cleanTable() {
     await pool.query('DELETE FROM threads_comments WHERE 1=1');
   },

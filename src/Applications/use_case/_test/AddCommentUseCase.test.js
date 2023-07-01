@@ -1,4 +1,3 @@
-const ExistingThread = require('../../../Domains/threads/entities/ExistingThread');
 const NewComment = require('../../../Domains/comments/entities/NewComment');
 const ExistingComment = require('../../../Domains/comments/entities/ExistingComment');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
@@ -13,15 +12,6 @@ describe('AddCommentUseCase', () => {
     const credentialId = 'user-456';
 
     const threadId = 'thread-123'
-    const mockNewThread = new ExistingThread({
-      id: threadId,
-      title: 'sebuah thread',
-      body: 'isi body yang lengkap',
-      owner: credentialId,
-      created_at: '2023-06-16T01:02:03.456Z',
-      updated_at: '2023-06-16T01:02:03.456Z',
-      is_delete: false,
-    });
     const commentId = 'comment-123'
     const mockNewComment = new ExistingComment({
       id: commentId,
@@ -33,7 +23,7 @@ describe('AddCommentUseCase', () => {
     });
     const mockNewThreadComment = {
       id: 'thread-comment-123',
-      thread_id: mockNewThread.id,
+      thread_id: threadId,
       comment_id: mockNewComment.id,
     }
 
@@ -44,7 +34,7 @@ describe('AddCommentUseCase', () => {
 
     /** mocking needed function */
     mockThreadRepository.verifyThreadAvailability = jest.fn()
-      .mockImplementation(() => Promise.resolve(mockNewThread));
+      .mockImplementation(() => Promise.resolve());
     mockCommentRepository.addComment = jest.fn()
       .mockImplementation(() => Promise.resolve(mockNewComment));
     mockThreadCommentRepository.addThreadComment = jest.fn()

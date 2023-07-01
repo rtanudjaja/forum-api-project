@@ -27,12 +27,6 @@ describe('GetThreadDetailUseCase', () => {
       updated_at: '2023-06-16T01:02:03.456Z',
       is_delete: false,
     });
-    const threadCommentId = 'thread-comment-123';
-    const mockNewThreadComment = {
-      id: threadCommentId,
-      thread_id: mockNewThread.id,
-      comment_id: mockNewComment.id,
-    }
 
     /** creating dependency of use case */
     const mockThreadRepository = new ThreadRepository();
@@ -42,7 +36,7 @@ describe('GetThreadDetailUseCase', () => {
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockNewThread));
     mockThreadCommentRepository.getThreadComments = jest.fn()
-      .mockImplementation(() => Promise.resolve([mockNewThread]));
+      .mockImplementation(() => Promise.resolve([mockNewComment]));
     
     /** creating use case instance */
     const getThreadDetailUseCase = new GetThreadDetailUseCase({

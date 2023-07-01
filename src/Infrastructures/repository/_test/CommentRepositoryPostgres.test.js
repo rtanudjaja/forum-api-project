@@ -172,4 +172,36 @@ describe('CommentRepository postgres', () => {
       await expect(commentRepositoryPostgres.verifyCommentOwner(commentId, credentialId)).resolves.not.toThrowError(AuthorizationError);
     });
   });
+
+  describe('verifyCommentAvailability function', () => {
+    it('should throw NotFoundError when comment not available', async () => {
+      // Arrange
+      const commentId = 'comment-123';
+      const fakeIdGenerator = () => '123'; // stub!
+      const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.verifyCommentAvailability(commentId)).rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not throw NotFoundError when comment available', async () => {
+      // Arrange
+      const commentId = 'comment-123';
+      const credentialId = 'user-456';
+      await CommentsTableTestHelper.addComment({
+        id: commentId,
+        content: 'sebuah comment',
+        owner: credentialId,
+        created_at: '2023-06-16T01:02:03.456Z',
+        updated_at: '2023-06-16T01:02:03.456Z'
+      });
+      const fakeIdGenerator = () => '123'; // stub!
+      const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.verifyCommentAvailability(commentId)).resolves.not.toThrowError(NotFoundError);
+    });
+  });
 });
