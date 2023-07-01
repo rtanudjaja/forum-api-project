@@ -86,8 +86,18 @@ describe('CommentRepository postgres', () => {
       const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
 
-      // Action & Assert
-      await expect(commentRepositoryPostgres.getCommentById(commentId)).resolves.not.toThrowError(NotFoundError);
+      // Action
+      const returnedComment = await commentRepositoryPostgres.getCommentById(commentId);
+
+      // Assert
+      expect(returnedComment).toStrictEqual(new ExistingComment({
+        id: commentId,
+        content: 'sebuah comment',
+        owner: credentialId,
+        created_at: '2023-06-16T01:02:03.456Z',
+        updated_at: '2023-06-16T01:02:03.456Z',
+        is_delete: false
+      }));
     });
   });
 
@@ -118,8 +128,15 @@ describe('CommentRepository postgres', () => {
       const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
       
-      // Action & Assert
-      await expect(commentRepositoryPostgres.deleteCommentById(commentId)).resolves.not.toThrowError(NotFoundError);
+      // Action
+      const returnedDeletedComments = await commentRepositoryPostgres.deleteCommentById(commentId);
+
+      // Assert
+      expect(returnedDeletedComments).toHaveLength(1);
+      expect(returnedDeletedComments[0]).toStrictEqual({
+        id: commentId,
+        is_delete: true
+      });
     });
   });
 
