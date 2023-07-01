@@ -44,6 +44,7 @@ describe('ExistingThread entities', () => {
       owner: 'user-456',
       created_at: '2023-06-16T01:02:03.456Z',
       updated_at: '2023-06-16T01:02:03.456Z',
+      username: 'username',
     };
 
     // Action
@@ -57,5 +58,6 @@ describe('ExistingThread entities', () => {
     expect(existingThread.owner).toEqual(payload.owner);
     expect(existingThread.created_at).toEqual(payload.created_at);
     expect(existingThread.updated_at).toEqual(payload.updated_at);
+    expect(existingThread.username).toEqual(payload.username);
   });
 });
