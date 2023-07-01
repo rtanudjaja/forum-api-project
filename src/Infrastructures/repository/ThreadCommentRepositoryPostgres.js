@@ -21,13 +21,17 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
 
   async getThreadComments(threadId) {
     const query = {
-      text: 'SELECT * FROM threads_comments WHERE thread_id = $1',
+      text: `SELECT comments.*, users.username FROM comments 
+        LEFT JOIN threads_comments ON threads_comments.comment_id = comments.id
+        LEFT JOIN users ON users.id = comments.owner 
+        WHERE thread_id = $1
+        ORDER BY comments.created_at`,
       values: [threadId],
     };
 
     const result = await this._pool.query(query);
     if (!result.rowCount) {
-      throw new NotFoundError('thread Comment tidak ditemukan');
+      throw new NotFoundError('thread comment tidak ditemukan');
     }
     return result.rows;
   }
@@ -40,7 +44,7 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
 
     const result = await this._pool.query(query);
     if (!result.rowCount) {
-      throw new NotFoundError('thread Comment tidak ditemukan');
+      throw new NotFoundError('thread comment tidak ditemukan');
     }
     return result.rows;
   }

@@ -329,7 +329,64 @@ describe('/threads endpoint', () => {
     });
   });
 
-  // describe('when GET /threads/{threadId}', () => {
-    
-  // });
+  describe('when GET /threads/{threadId}', () => {
+    it('should response 200 and returned status success', async () => {
+      // Arrange
+      const credentialId = 'user-456';
+      const threadId = 'thread-123';
+      await ThreadsTableTestHelper.addThread({
+        id: threadId,
+        title: 'sebuah thread',
+        body: 'isi body yang lengkap',
+        owner: credentialId,
+        created_at: '2023-06-16T01:02:03.456Z',
+        updated_at: '2023-06-16T01:02:03.456Z'
+      });
+      const commentId = 'comment-123';
+      await CommentsTableTestHelper.addComment({
+        id: commentId,
+        content: 'sebuah comment',
+        owner: credentialId,
+        created_at: '2023-06-16T01:02:03.456Z',
+        updated_at: '2023-06-16T01:02:03.456Z'
+      });
+      const threadCommentId = 'thread-comment-123';
+      await ThreadCommentsTableTestHelper.addThreadComment({
+        id: threadCommentId,
+        thread_id: threadId,
+        comment_id: commentId,
+      });
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread).toBeDefined();
+    });
+
+    it('should response 404 when thread is not valid and/or cannot be found', async () => {
+      // Arrange
+      const threadId = 'thread-123';
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).not.toEqual('');
+    });
+  });
 });

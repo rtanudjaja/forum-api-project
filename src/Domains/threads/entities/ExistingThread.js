@@ -8,6 +8,7 @@ class ExistingThread {
     this.owner = payload.owner;
     this.created_at = payload.created_at;
     this.updated_at = payload.updated_at;
+    this.username = payload?.username || null;
   }
 
   _verifyPayload(payload) {
