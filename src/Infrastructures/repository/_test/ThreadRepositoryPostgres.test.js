@@ -102,4 +102,37 @@ describe('ThreadsRepository postgres', () => {
       }));
     });
   });
+
+  describe('verifyThreadAvailability function', () => {
+    it('should throw NotFoundError when thread not available', async () => {
+      // Arrange
+      const threadId = 'thread-123';
+      const fakeIdGenerator = () => '123'; // stub!
+      const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+
+      // Action & Assert
+      await expect(threadRepositoryPostgres.verifyThreadAvailability(threadId)).rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not throw NotFoundError when thread not available', async () => {
+      // Arrange
+      const threadId = 'thread-123';
+      const credentialId = 'user-456';
+      await ThreadsTableTestHelper.addThread({
+        id: threadId,
+        title: 'sebuah thread',
+        body: 'isi body yang lengkap',
+        owner: credentialId,
+        created_at: '2023-06-16T01:02:03.456Z',
+        updated_at: '2023-06-16T01:02:03.456Z'
+      });
+      const fakeIdGenerator = () => '123'; // stub!
+      const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+      
+      // Action & Assert
+      await expect(threadRepositoryPostgres.verifyThreadAvailability(threadId)).resolves.not.toThrow(NotFoundError);
+    });
+  });
 });

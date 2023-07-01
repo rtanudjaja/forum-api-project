@@ -43,7 +43,7 @@ describe('AddCommentUseCase', () => {
     const mockThreadCommentRepository = new ThreadCommentRepository();
 
     /** mocking needed function */
-    mockThreadRepository.getThreadById = jest.fn()
+    mockThreadRepository.verifyThreadAvailability = jest.fn()
       .mockImplementation(() => Promise.resolve(mockNewThread));
     mockCommentRepository.addComment = jest.fn()
       .mockImplementation(() => Promise.resolve(mockNewComment));
@@ -72,7 +72,7 @@ describe('AddCommentUseCase', () => {
       })
     );
 
-    expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
+    expect(mockThreadRepository.verifyThreadAvailability).toBeCalledWith(threadId);
     expect(mockCommentRepository.addComment).toBeCalledWith(
       new NewComment(credentialId, { content: useCasePayload.content })
     )
