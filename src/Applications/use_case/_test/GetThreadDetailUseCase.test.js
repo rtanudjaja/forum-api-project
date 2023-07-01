@@ -1,7 +1,6 @@
 const ExistingThread = require('../../../Domains/threads/entities/ExistingThread');
 const ExistingComment = require('../../../Domains/comments/entities/ExistingComment');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
-// const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const ThreadCommentRepository = require('../../../Domains/threads_comments/ThreadCommentRepository');
 const GetThreadDetailUseCase = require('../GetThreadDetailUseCase');
 
