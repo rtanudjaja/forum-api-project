@@ -46,7 +46,7 @@ class ThreadCommentRepositoryPostgres extends ThreadCommentRepository {
     if (!result.rowCount) {
       throw new NotFoundError('thread comment tidak ditemukan');
     }
-    return result.rows;
+    return result.rows[0];
   }
 }
 
