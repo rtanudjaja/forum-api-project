@@ -72,7 +72,7 @@ describe('ThreadsRepository postgres', () => {
       await expect(threadRepositoryPostgres.getThreadById(threadId)).rejects.toThrowError(NotFoundError);
     });
 
-    it('should not throw NotFoundError when thread available', async () => {
+    it('should return the thread correctly', async () => {
       // Arrange
       const threadId = 'thread-123';
       const credentialId = 'user-456';
@@ -87,9 +87,19 @@ describe('ThreadsRepository postgres', () => {
       const fakeIdGenerator = () => '123'; // stub!
       const datetimeGetter = () => '2023-06-16T01:02:03.456Z' //stub!
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator, datetimeGetter);
+      
+      // Action
+      const thread = await threadRepositoryPostgres.getThreadById(threadId);
 
-      // Action & Assert
-      await expect(threadRepositoryPostgres.getThreadById(threadId)).resolves.not.toThrowError(NotFoundError);
+      // Assert
+      expect(thread).toStrictEqual(new ExistingThread({
+        id: threadId,
+        title: 'sebuah thread',
+        body: 'isi body yang lengkap',
+        owner: credentialId,
+        created_at: '2023-06-16T01:02:03.456Z',
+        updated_at: '2023-06-16T01:02:03.456Z',
+      }));
     });
   });
 });
