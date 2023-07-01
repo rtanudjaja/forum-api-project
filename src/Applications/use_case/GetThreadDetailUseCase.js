@@ -1,4 +1,4 @@
-const IS_DELETE_COMMENT_MSG = '**komentar telah dihapus**';
+const { IS_DELETE_COMMENT_MSG } = require('../../Commons/const');
 
 class GetThreadDetailUseCase {
   constructor({ threadRepository, threadCommentRepository }) {

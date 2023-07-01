@@ -130,6 +130,7 @@ describe('CommentRepository postgres', () => {
       
       // Action
       const returnedDeletedComments = await commentRepositoryPostgres.deleteCommentById(commentId);
+      const deletedCommentById = await commentRepositoryPostgres.getCommentById(commentId); 
 
       // Assert
       expect(returnedDeletedComments).toHaveLength(1);
@@ -137,6 +138,14 @@ describe('CommentRepository postgres', () => {
         id: commentId,
         is_delete: true
       });
+      expect(deletedCommentById).toStrictEqual(new ExistingComment({
+        id: commentId,
+        content: 'sebuah comment',
+        owner: credentialId,
+        created_at: '2023-06-16T01:02:03.456Z',
+        updated_at: '2023-06-16T01:02:03.456Z',
+        is_delete: true
+      }));
     });
   });
 
